@@ -12,7 +12,6 @@ pipeline {
     stage('Install and Verify Dependencies') {
       steps {
         echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-        echo "Image name: $SCHEDULER_IMAGE"
         echo "${params.ReleaseVersion}"
       }
     }
@@ -27,23 +26,12 @@ pipeline {
       }
     }
     stage('Push Docker Images to ECR') {
-      // only run this stage when previous steps have completed successfully
-      when {
-        expression {
-          currentBuild.result == null || currentBuild.result == 'SUCCESS'
-        }
-      }
       steps {
         echo "Pushing docker images to ECR"
       }
     }
 
     stage('Trigger deployments') {
-      when {
-        expression {
-          currentBuild.result == null || currentBuild.result == 'SUCCESS'
-        }
-      }
       steps {
         echo "Trigger Deployment"
       }
@@ -56,14 +44,6 @@ pipeline {
     }
     failure {
       echo "CI script failed...."
-    }
-    cleanup {
-        echo "Cleaning Workspace.."
-        echo "Removing stale docker images from old or unsuccessful builds"
-        sh('''
-            (docker rmi $(docker images -f 'dangling=true' -q)) || true
-          ''')
-        echo "Exiting Script"
     }
   }
 }
