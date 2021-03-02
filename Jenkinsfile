@@ -4,7 +4,7 @@ pipeline {
     string(name: 'RELEASE_VERSION', defaultValue: '0.0.0-develop-000', description: 'Release Version')
   }
   environment {
-    SCHEDULER_IMAGE_PATH = "$PIPELINES_REGISTRY_URL/$SCHEDULER_IMAGE"
+    //SCHEDULER_IMAGE_PATH = "$PIPELINES_REGISTRY_URL/$SCHEDULER_IMAGE"
     RELEASE_VERSION = "0.0.0-develop-000"
   }
 
