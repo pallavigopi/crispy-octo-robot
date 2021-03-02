@@ -22,14 +22,6 @@ pipeline {
       }
     }
     stage('Running tests for all services') {
-      environment {
-        RUN_MODE = "development"
-      }
-      when {
-        expression {
-          currentBuild.result == null || currentBuild.result == 'SUCCESS'
-        }
-      }
       steps {
         echo "Running tests"
       }
